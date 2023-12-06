@@ -3,10 +3,12 @@ import { SessionService } from './session.service';
 import { Response } from 'express';
 import { SessionData } from 'express-session';
 import * as svgCaptcha from 'svg-captcha';
+import { CommonService } from 'src/common/common.service';
 
 @Controller({ path: 'session', version: '1' })
 export class SessionController {
   constructor(
+    private readonly common: CommonService,
     private readonly sessionService: SessionService,
     @Inject('Session') private readonly session: SessionService,
     @Inject('CONFIG') private readonly config: { [key: string]: any },
@@ -17,7 +19,8 @@ export class SessionController {
   findList() {
     // return this.session.fetchData();
     // return this.config;
-    return this.asyncSession.fetchData();
+    // return this.asyncSession.fetchData();
+    return this.common.commonMethod();
   }
 
   @Get('code')
