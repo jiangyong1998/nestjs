@@ -1,4 +1,4 @@
-import { Controller, Get, Res, Session, Version } from '@nestjs/common';
+import { Controller, Get, Inject, Res, Session, Version } from '@nestjs/common';
 import { SessionService } from './session.service';
 import { Response } from 'express';
 import { SessionData } from 'express-session';
@@ -6,7 +6,19 @@ import * as svgCaptcha from 'svg-captcha';
 
 @Controller({ path: 'session', version: '1' })
 export class SessionController {
-  constructor(private readonly sessionService: SessionService) {}
+  constructor(
+    private readonly sessionService: SessionService,
+    @Inject('Session') private readonly session: SessionService,
+    @Inject('CONFIG') private readonly config: { [key: string]: any },
+    @Inject('AsyncSession') private readonly asyncSession: SessionService,
+  ) {}
+
+  @Get('list')
+  findList() {
+    // return this.session.fetchData();
+    // return this.config;
+    return this.asyncSession.fetchData();
+  }
 
   @Get('code')
   @Version('1')
