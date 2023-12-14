@@ -5,6 +5,7 @@ import { SessionModule } from './session/session.module';
 import { CommonModule } from './common/common.module';
 import { ConfigModule } from './config/config.module';
 import { UploadModule } from './upload/upload.module';
+import { LoginModule } from './login/login.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { UploadModule } from './upload/upload.module';
     CommonModule,
     ConfigModule.forRoot({}),
     UploadModule,
+    LoginModule,
   ],
   controllers: [AppController],
   providers: [AppService],
