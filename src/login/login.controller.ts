@@ -17,9 +17,19 @@ import { UpdateLoginDto } from './dto/update-login.dto';
 import { RoleGuard } from 'src/guard/role.guard';
 import { Role } from 'src/decorator/role.decorator';
 import { Url } from 'src/decorator/url.decorator';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiParam,
+  ApiQuery,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 
 @Controller('login')
 @UseGuards(RoleGuard)
+@ApiTags('login')
+@ApiBearerAuth()
 export class LoginController {
   constructor(private readonly loginService: LoginService) {}
 
@@ -31,6 +41,9 @@ export class LoginController {
   @Get()
   // @SetMetadata('roles', ['admin']) // key, 权限集合
   @Role(['admin'])
+  @ApiOperation({ summary: '测试权限', description: '请求该接口需要admin权限' })
+  @ApiQuery({ name: 'name', description: '姓名' })
+  @ApiResponse({ status: 500, description: '服务器错误' })
   findAll(@Url() url: string) {
     console.log(url);
 
@@ -38,6 +51,7 @@ export class LoginController {
   }
 
   @Get(':id')
+  @ApiParam({ name: 'id', description: '用户id', required: true })
   findOne(@Param('id', ParseIntPipe) id: number) {
     console.log(typeof id);
 

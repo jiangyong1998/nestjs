@@ -8,6 +8,7 @@ import { join } from 'path';
 import { ResponseInterceptor } from './interceptor/response.interceptor';
 import { ResponseFilter } from './filter/response.filter';
 import { RoleGuard } from './guard/role.guard';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 const blackList = ['/v1/session/code'];
 
@@ -30,6 +31,16 @@ async function bootstrap() {
   app.useGlobalFilters(new ResponseFilter());
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalGuards(new RoleGuard(new Reflector()));
+
+  // swagger
+  const options = new DocumentBuilder()
+    .addBearerAuth()
+    .setTitle('接口文档')
+    .setDescription('接口文档描述')
+    .setVersion('1')
+    .build();
+  const document = SwaggerModule.createDocument(app, options);
+  SwaggerModule.setup('/api-docs', app, document);
 
   await app.listen(3002);
 }
