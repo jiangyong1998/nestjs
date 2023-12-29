@@ -7,6 +7,7 @@ import { ConfigModule } from './config/config.module';
 import { UploadModule } from './upload/upload.module';
 import { LoginModule } from './login/login.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       retryAttempts: 10, // 重试连接数据库的次数
       autoLoadEntities: true, // 如果为true,将自动加载实体 forFeature()方法注册的每个实体都将自动添加到配置对象的实体数组中
     }),
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],

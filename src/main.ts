@@ -21,7 +21,9 @@ function GlobalMiddleware(req: Request, res: Response, next: NextFunction) {
 }
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
+    cors: true,
+  });
   app.enableVersioning({ type: VersioningType.URI });
   app
     .use(session({ secret: 'test', name: 'test.session' }))
@@ -30,7 +32,7 @@ async function bootstrap() {
   app.useGlobalInterceptors(new ResponseInterceptor());
   app.useGlobalFilters(new ResponseFilter());
   app.useGlobalPipes(new ValidationPipe());
-  app.useGlobalGuards(new RoleGuard(new Reflector()));
+  // app.useGlobalGuards(new RoleGuard(new Reflector()));
 
   // swagger
   const options = new DocumentBuilder()
